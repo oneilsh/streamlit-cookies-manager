@@ -48,10 +48,10 @@ class CookieManager(MutableMapping[str, str]):
         return '<CookieManager: not ready>'
 
     def __getitem__(self, k: str) -> str:
-        try:
-            return self._get_cookies()[k]
-        except KeyError:
-            raise CookiesNotReady()
+        cookies = self._get_cookies()
+        if k not in cookies:
+            raise KeyError(k)
+        return cookies[k]
 
     def __iter__(self):
         return iter(self._get_cookies())
